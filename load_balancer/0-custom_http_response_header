@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Installs nginx and adds a custom X-Served-By header with the hostname
+apt-get update
+apt-get install -y nginx
+echo "Holberton School for the win!" > /var/www/html/index.html
+sed -i "/server_name _;/a \\\tadd_header X-Served-By \$HOSTNAME;" /etc/nginx/sites-available/default
+service nginx restart
