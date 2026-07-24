@@ -2,7 +2,8 @@
 # Configures nginx to run as the nginx user and listen on port 8080
 apt-get update
 apt-get install -y nginx
-id -u nginx &>/dev/null || useradd nginx
+id -u nginx > /dev/null 2>&1 || useradd nginx
+chmod 644 /etc/nginx/nginx.conf
 sed -i "s/^user .*/user nginx;/" /etc/nginx/nginx.conf
 sed -i "s/listen 80 default_server;/listen 8080 default_server;/" /etc/nginx/sites-enabled/default
 sed -i "s/listen \[::\]:80 default_server ipv6only=on;/listen [::]:8080 default_server ipv6only=on;/" /etc/nginx/sites-enabled/default
@@ -10,6 +11,7 @@ chown -R nginx:nginx /var/log/nginx
 chown -R nginx:nginx /var/lib/nginx
 touch /run/nginx.pid
 chown nginx:nginx /run/nginx.pid
+pkill apache2
 pkill nginx
 sleep 1
 sudo -u nginx nginx
