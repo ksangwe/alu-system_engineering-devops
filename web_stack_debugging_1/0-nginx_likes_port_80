@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Configures nginx to listen on port 80 of all active IPv4 IPs
-apt-get update
-apt-get install -y nginx
-printf 'server {\n\tlisten 80 default_server;\n\tlisten [::]:80 default_server;\n\troot /var/www/html;\n\tindex index.html index.htm;\n\tserver_name _;\n}\n' > /etc/nginx/sites-available/default
-service nginx restart
+sed -i "s/listen 8080 default_server;/listen 80 default_server;/" /etc/nginx/sites-enabled/default
+sed -i "s/listen \[::\]:8080 default_server ipv6only=on;/listen [::]:80 default_server ipv6only=on;/" /etc/nginx/sites-enabled/default
+pkill nginx
+service nginx start
